@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto py-10 grid gap-10">
+    <div class="flex justify-center">
+        <a href="{% url 'home' %}" class="flex items-center gap-4">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="w-24" alt="">
+            <h1 class="text-5xl font-extrabold dark:text-white">CreativeWEB</h1>
+        </a>
+    </div>
+    <div class="">
+        {% block layout_content %}
+        {% endblock layout_content %}
+    </div>
+</div>
+{% endblock content %}
