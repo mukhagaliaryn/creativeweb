@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('accounts/', include('accounts.urls')),
     path('', include('workspace.urls')),
+    path('progress/', include('progress.urls')),
 ]
 
 

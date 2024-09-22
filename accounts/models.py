@@ -34,7 +34,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email'), max_length=128, unique=True)
     username = models.CharField(_('username'), max_length=128, unique=True)
-    full_name = models.CharField(_('Full name'), max_length=128)
+    full_name = models.CharField(_('Полная имя'), max_length=128)
     avatar = models.ImageField(_('Avatar'), upload_to='accounts/users/', blank=True, null=True)
     is_staff = models.BooleanField(
         verbose_name=_("staff status"), default=False,
@@ -64,5 +64,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.full_name
 
     class Meta:
-        verbose_name = _('User')
-        verbose_name_plural = _('Users')
+        verbose_name = _('Пользователь')
+        verbose_name_plural = _('Пользователи')

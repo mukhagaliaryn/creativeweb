@@ -32,7 +32,7 @@
 
     <div class="w-full block bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-col items-center p-10">
-            <img class="w-48 h-48 mb-3 rounded-full shadow-lg" src="{{ user_profile.avatar.url }}" alt="Bonnie image" />
+            <img class="w-48 h-48 mb-3 rounded-full shadow-lg" src="{% if user.profile.avatar %}{{ user_profile.avatar.url }}{% else %}{% static '/images/user-default.jpg'%}{% endif %}" alt="Bonnie image" />
             <h2 class="text-4xl font-bold dark:text-white">{{ user_profile.full_name }}</h2>
             <span class="text-gray-500 dark:text-gray-400">{{ user_profile.username }}</span>
             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">

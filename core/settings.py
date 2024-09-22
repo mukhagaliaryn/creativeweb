@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'workspace.apps.WorkspaceConfig',
+    'progress.apps.ProgressConfig',
 ]
 
 

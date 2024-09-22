@@ -1,0 +1,74 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+
+{% block title %}
+{{ user_lesson.lesson.title }} | CreativeWEB
+{% endblock title %}
+
+
+{% block main_content %}
+<div class="flex gap-10">
+    <div class="flex-grow grid gap-4">
+        <div>
+            <h2 class="text-4xl font-bold dark:text-white">{{ user_lesson.lesson.title }}</h2>
+            <span class="text-gray-500">{{ user_lesson.lesson.description }}</span>
+        </div>
+
+        <div>
+            {% for video in user_lesson.lesson.video_contents.all %}
+            <iframe width="100%" height="480" src="https://www.youtube.com/embed/{{ video.video_url|slice:'
+                https://www.youtube.com/watch?v='|last }}" title="{{ video.lesson.title }}" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            {% endfor %}
+        </div>
+
+        <div>
+            {% for test in user_lesson.lesson.test_contents.all %}
+            <div class="pb-4">
+                <h2 class="text-xl font-semibold dark:text-white">{{ forloop.counter }}. {{ test.question }}</h2>
+
+                {% for option in test.options.all %}
+                <div class="flex items-center my-4">
+                    <input 
+                        type="radio" name="question_{{ test.id }}" value="{{ option.id }}"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        {{ option.text }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="mb-10">
+            <a 
+                href="{% url 'home' %}" 
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+                Сабақты аяқтау
+            </a> 
+        </div>
+    </div>
+
+    <div class="w-[360px] h-full grid gap-2">
+        {% for u_lesson in user_lessons %}
+        <a href="{% url 'lesson_detail' u_lesson.user_course.id u_lesson.id %}"
+            class="px-10 py-5 border rounded-lg flex gap-4 hover:bg-gray-100">
+            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                    d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 .087.586l2.977-7.937A1 1 0 0 1 6 10h12V9a2 2 0 0 0-2-2h-4.532l-1.9-2.28A2 2 0 0 0 8.032 4H4Zm2.693 8H6.5l-3 8H18l3-8H6.693Z"
+                    clip-rule="evenodd" />
+            </svg>
+            <div>
+                <h5 class="text-lg font-semibold dark:text-white">{{ u_lesson.lesson.title }}</h5>
+                <span class="text-gray-500 block">{{ u_lesson.lesson.updated_at }}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock main_content %}
