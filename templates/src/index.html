@@ -1,7 +1,7 @@
 {% extends 'layouts/main.html' %}
 
 {% block title %}
-    Басқару панелі | CreativeWEB
+Басқару панелі | CreativeWEB
 {% endblock title %}
 
 
@@ -9,20 +9,22 @@
 <div class="container grid grid-cols-4 gap-2">
 
     {% for number in numbers %}
-        <a 
-            href="#"
-            class="w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-        >
-            <img class="rounded-t-lg" src="https://flowbite.com/docs/images/blog/image-1.jpg" alt="" />
-            
-            <div class="p-5">
-                <h5 class="mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-                    Noteworthy technology acquisitions 2021
-                </h5>
-                <span class="block text-gray-500">Информатика</span>
-            </div>
-        </a>
-    {% endfor %}
+    <a 
+        href="#" 
+        class="w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-100"
+    >
+        <img class="rounded-t-lg" src="https://flowbite.com/docs/images/blog/image-1.jpg" alt="" />
 
+        <div class="p-5">
+            <h5 class="mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+                Noteworthy technology acquisitions 2021
+            </h5>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+            </div>
+            <span class="block text-gray-500">Информатика</span>
+        </div>
+    </a>
+    {% endfor %}
 </div>
 {% endblock main_content %}
