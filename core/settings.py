@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
+from django.utils.translation import gettext_lazy as _
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-vpuw(=(@h97u=_w!+2_ddj@w2-370-6%7ku+i+q0oa07#u=gp4'
@@ -45,6 +47,7 @@ MESSAGE_TAGS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -106,10 +109,20 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 # Internationalization
-LANGUAGE_CODE = 'ru-RU'
-TIME_ZONE = 'Asia/Almaty'
+LANGUAGE_CODE = 'en'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+    ('kk', _('Kazakh')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locales'
+]
 
 
 # Static files (CSS, JavaScript, Images)

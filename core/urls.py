@@ -9,9 +9,8 @@ urlpatterns = [
 
     path('accounts/', include('accounts.urls')),
     path('', include('workspace.urls')),
-    path('progress/', include('progress.urls')),
 ]
 
-
+urlpatterns += [re_path(r'^i18n/', include('django.conf.urls.i18n'))]
 urlpatterns += [re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})]
 urlpatterns += [re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT})]

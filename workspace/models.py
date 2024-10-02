@@ -2,121 +2,128 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class LessonCategory(models.Model):
-    name = models.CharField(_('Название'), max_length=255, unique=True)
-    description = models.TextField(_('Описание'), blank=True, null=True)
+# Course Category
+class Category(models.Model):
+    name = models.CharField(_('Name'), max_length=255, unique=True)
+    description = models.TextField(_('Description'), blank=True, null=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = _('Категория')
-        verbose_name_plural = _('Категорий')
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
+# Course
 class Course(models.Model):
     category = models.ForeignKey(
-        LessonCategory, related_name='courses', on_delete=models.CASCADE,
-        verbose_name=_('Категория')
+        Category, related_name='courses', on_delete=models.CASCADE,
+        verbose_name=_('Category')
     )
-    title = models.CharField(_('Название'), max_length=255)
-    description = models.TextField(_('Описание'), blank=True, null=True)
+    title = models.CharField(_('Title'), max_length=255)
+    description = models.TextField(_('Description'), blank=True, null=True)
     poster = models.ImageField(upload_to='courses/posters/', blank=True, null=True)
-    created_at = models.DateTimeField(_('Создано'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('Обновлено'), auto_now=True)
+    created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated at'), auto_now=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = _('Курс')
-        verbose_name_plural = _('Курсы')
+        verbose_name = _('Course')
+        verbose_name_plural = _('Courses')
 
 
+# Course Lesson
 class Lesson(models.Model):
     course = models.ForeignKey(
         Course, related_name='lessons', on_delete=models.CASCADE,
-        verbose_name=_('Курс')
+        verbose_name=_('Course')
     )
-    title = models.CharField(_('Заглавие'), max_length=255)
-    description = models.TextField(_('Описание'), blank=True, null=True)
-    created_at = models.DateTimeField(_('Создано'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('Обновлено'), auto_now=True)
+    title = models.CharField(_('Title'), max_length=255)
+    description = models.TextField(_('Description'), blank=True, null=True)
+    created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated at'), auto_now=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = _('Урок')
-        verbose_name_plural = _('Уроки')
+        verbose_name = _('Lesson')
+        verbose_name_plural = _('Lessons')
 
 
-class LessonContent(models.Model):
+class Content(models.Model):
     lesson = models.ForeignKey(Lesson, related_name='contents', on_delete=models.CASCADE)
-    order = models.PositiveIntegerField(_('Порядок'), default=0)
+    order = models.PositiveIntegerField(_('Order'), default=0)
 
     class Meta:
         abstract = True
-        ordering = ['order']
+        ordering = ('order', )
 
     def __str__(self):
-        return f'Content for {self.lesson.title}'
+        return f'Content for {self.lesson}'
 
 
-class VideoContent(LessonContent):
+# Lesson Video
+class Video(Content):
     lesson = models.ForeignKey(
         Lesson, on_delete=models.CASCADE,
-        related_name='video_contents', verbose_name=_('Урок')
+        related_name='video_all', verbose_name=_('Lesson')
     )
-    video_url = models.URLField(_('Видео URL'), max_length=500)
-    duration = models.DurationField(_('Продолжительность'))
+    video_url = models.URLField(_('Video URL'), max_length=500)
+    duration = models.DurationField(_('Duration'))
 
     class Meta:
-        verbose_name = _('Видеоконтент')
-        verbose_name_plural = _('Видеоконтент')
+        verbose_name = _('Video')
+        verbose_name_plural = _('Video')
 
     def __str__(self):
-        return f'Видео: {self.video_url} (Урок: {self.lesson.title})'
+        return f'Video: {self.video_url} (Lesson: {self.lesson})'
 
 
-class TestContent(LessonContent):
+# Lesson Test
+class Test(Content):
     lesson = models.ForeignKey(
         Lesson, on_delete=models.CASCADE,
-        related_name='test_contents', verbose_name=_('Урок')
+        related_name='tests', verbose_name=_('Lesson')
     )
-    question = models.TextField(_('Вопрос'), max_length=500)
+    question = models.TextField(_('Question'), max_length=500)
 
     class Meta:
-        verbose_name = _('Тестконтент')
-        verbose_name_plural = _('Тестконтенты')
+        verbose_name = _('Test')
+        verbose_name_plural = _('Tests')
 
     def __str__(self):
-        return f'Тест: {self.question} (Урок: {self.lesson.title})'
+        return f'Test: {self.question} (Lesson: {self.lesson})'
 
 
+# Test options
 class TestOption(models.Model):
     test = models.ForeignKey(
-        TestContent, related_name='options', on_delete=models.CASCADE,
-        verbose_name=_('Tест')
+        Test, related_name='options', on_delete=models.CASCADE,
+        verbose_name=_('Test')
     )
-    text = models.TextField(_('Текст'), max_length=255)
-    is_correct = models.BooleanField(_('Является правильным'), default=False)
+    text = models.TextField(_('Text'), max_length=255)
+    is_correct = models.BooleanField(_('Is correct'), default=False)
 
     def __str__(self):
-        return f'Вариант: {self.text} (Правильно: {self.is_correct})'
+        return f'Option: {self.text} (Correct: {self.is_correct})'
 
 
-class InputTaskContent(LessonContent):
+# Lesson Task
+class Task(Content):
     lesson = models.ForeignKey(
-        Lesson, related_name='input_task_contents', on_delete=models.CASCADE,
-        verbose_name=_('Урок')
+        Lesson, related_name='tasks', on_delete=models.CASCADE,
+        verbose_name=_('Lesson')
     )
-    task_description = models.TextField(_('Описание задачи'))
-    correct_answer = models.CharField(_('Является правильным'), max_length=255)
+    description = models.TextField(_('Description'))
+    correct_answer = models.CharField(_('Correct answer'), max_length=255)
 
     class Meta:
-        verbose_name = _('Ввод содержимого задачи')
-        verbose_name_plural = _('Ввод содержимого задачи')
+        verbose_name = _('Task')
+        verbose_name_plural = _('Tasks')
 
     def __str__(self):
-        return f'Входная задача: {self.task_description} (Урок: {self.lesson.title})'
+        return f'Task: {self.description} (Lesson: {self.lesson})'

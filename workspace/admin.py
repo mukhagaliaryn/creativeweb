@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import LessonCategory, Lesson, VideoContent, TestContent, InputTaskContent, TestOption, Course
+from .models import Category, Lesson, Video, Test, Task, TestOption, Course
 
 
-@admin.register(LessonCategory)
-class LessonCategoryAdmin(admin.ModelAdmin):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ('name',)
 
@@ -14,18 +14,18 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
-class VideoContentInline(admin.TabularInline):
-    model = VideoContent
+class VideoInline(admin.TabularInline):
+    model = Video
     extra = 1
 
 
-class TestContentInline(admin.TabularInline):
-    model = TestContent
+class TestInline(admin.TabularInline):
+    model = Test
     extra = 1
 
 
-class InputTaskContentInline(admin.TabularInline):
-    model = InputTaskContent
+class TaskInline(admin.TabularInline):
+    model = Task
     extra = 1
 
 
@@ -34,11 +34,11 @@ class LessonAdmin(admin.ModelAdmin):
     list_display = ('title', 'course', 'created_at', 'updated_at')
     search_fields = ('title',)
     list_filter = ('course',)
-    inlines = [VideoContentInline, TestContentInline, InputTaskContentInline]
+    inlines = [VideoInline, TestInline, TaskInline]
 
 
-@admin.register(VideoContent)
-class VideoContentAdmin(admin.ModelAdmin):
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
     list_display = ('lesson', 'video_url', 'duration', )
     list_filter = ('lesson',)
 
@@ -48,14 +48,14 @@ class TestOptionInline(admin.TabularInline):
     extra = 2
 
 
-@admin.register(TestContent)
-class TestContentAdmin(admin.ModelAdmin):
+@admin.register(Test)
+class TestAdmin(admin.ModelAdmin):
     list_display = ('lesson', 'question',)
     list_filter = ('lesson',)
     inlines = [TestOptionInline]
 
 
-@admin.register(InputTaskContent)
-class InputTaskContentAdmin(admin.ModelAdmin):
-    list_display = ('lesson', 'task_description', 'correct_answer',)
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('lesson', 'description', 'correct_answer',)
     list_filter = ('lesson',)
